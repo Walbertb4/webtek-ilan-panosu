@@ -96,6 +96,9 @@ h2 {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
 }
 
 .kart {
@@ -203,4 +206,16 @@ footer {
   color: var(--ikincil-metin);
   border-top: 1px solid var(--kenarlik);
   font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  header h1 {
+    margin: 0;
+  }
 }
