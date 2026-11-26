@@ -1,5 +1,7 @@
 // app.js: ilanlar.json dosyasını okur ve ilanları kart olarak sayfaya basar.
-// Sayfayı Live Server ile açın. file:// ile açılan sayfada fetch çalışmaz.
+// Sayfayı Live Server ile açın. file:// ile açılan sayfada fetch ve modüller çalışmaz.
+
+import { ilanlariGetir } from "./veri.js";
 
 const ADRES = "ilanlar.json";
 const LISTE_ANAHTAR = "basvuracaklarim";
@@ -90,12 +92,7 @@ function suz() {
 async function baslat() {
   durum("yukleniyor", "İlanlar yükleniyor…");
   try {
-    const yanit = await fetch(ADRES);
-
-    if (!yanit.ok) throw new Error(`HTTP ${yanit.status}`);
-
-    ilanlar = await yanit.json();
-
+    ilanlar = await ilanlariGetir(ADRES);
     suz();
   } catch (hata) {
     durum("hata", "İlanlar yüklenemedi: " + hata.message);
