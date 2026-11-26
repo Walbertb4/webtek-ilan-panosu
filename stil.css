@@ -158,7 +158,7 @@ h2 {
   margin-top: auto;
 }
 
-.kart .basvur[aria-pressed="true"] {
+.kart .basvur.listede {
   background: var(--ana-acik);
   color: var(--ana-koyu);
   border: 1px solid var(--ana);

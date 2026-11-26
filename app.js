@@ -57,9 +57,8 @@ function kart(ilan) {
   const listede = basvuracaklarim.includes(ilan.id);
   const dugme = document.createElement("button");
   dugme.type = "button";
-  dugme.className = "basvur";
+  dugme.className = listede ? "basvur listede" : "basvur";
   dugme.textContent = listede ? "Listemden çıkar" : "Listeme ekle";
-  dugme.setAttribute("aria-pressed", String(listede));
 
   li.append(baslik, firma, bilgi, aciklama, dugme);
   return li;
@@ -93,6 +92,9 @@ async function baslat() {
   durum("yukleniyor", "İlanlar yükleniyor…");
   try {
     ilanlar = await ilanlariGetir(ADRES);
+    const gecerliIdler = new Set(ilanlar.map((ilan) => ilan.id));
+    basvuracaklarim = basvuracaklarim.filter((id) => gecerliIdler.has(id));
+    sayaciGuncelle();
     suz();
   } catch (hata) {
     durum("hata", "İlanlar yüklenemedi: " + hata.message);
@@ -108,16 +110,19 @@ $("#ilanlar").addEventListener("click", (olay) => {
   if (!dugme) return;
 
   const id = Number(dugme.closest(".kart").dataset.id);
-  if (basvuracaklarim.includes(id)) {
+  const cikarildi = basvuracaklarim.includes(id);
+  if (cikarildi) {
     basvuracaklarim = basvuracaklarim.filter((kayitId) => kayitId !== id);
   } else {
     basvuracaklarim.push(id);
   }
 
+  const listede = !cikarildi;
+  dugme.textContent = listede ? "Listemden çıkar" : "Listeme ekle";
+  dugme.classList.toggle("listede", listede);
+
   listeKaydet();
   sayaciGuncelle();
-  suz();
 });
 
-sayaciGuncelle();
 baslat();
