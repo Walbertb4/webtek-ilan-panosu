@@ -74,6 +74,29 @@ h2 {
   font-size: 1.35rem;
 }
 
+.bolum-baslik {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.bolum-baslik h2 {
+  margin: 0;
+}
+
+#liste-sayisi {
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--ana-acik);
+  color: var(--ana-koyu);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
 .suzgec-cubugu {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
@@ -129,6 +152,16 @@ h2 {
   margin: 0;
   color: var(--ikincil-metin);
   font-size: 0.95rem;
+}
+
+.kart .basvur {
+  margin-top: auto;
+}
+
+.kart .basvur[aria-pressed="true"] {
+  background: var(--ana-acik);
+  color: var(--ana-koyu);
+  border: 1px solid var(--ana);
 }
 
 #basvuru {

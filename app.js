@@ -2,11 +2,30 @@
 // Sayfayı Live Server ile açın. file:// ile açılan sayfada fetch çalışmaz.
 
 const ADRES = "ilanlar.json";
+const LISTE_ANAHTAR = "basvuracaklarim";
 const $ = (secici) => document.querySelector(secici);
 
 const ALAN_ADI = { "on-yuz": "Ön yüz", "arka-uc": "Arka uç", veri: "Veri", sistem: "Sistem" };
 
 let ilanlar = [];
+let basvuracaklarim = listeOku();
+
+function listeOku() {
+  try {
+    const kayit = JSON.parse(localStorage.getItem(LISTE_ANAHTAR));
+    return Array.isArray(kayit) ? kayit.map(Number).filter(Number.isFinite) : [];
+  } catch {
+    return [];
+  }
+}
+
+function listeKaydet() {
+  localStorage.setItem(LISTE_ANAHTAR, JSON.stringify(basvuracaklarim));
+}
+
+function sayaciGuncelle() {
+  $("#liste-sayisi").textContent = `Başvuracaklarım: ${basvuracaklarim.length}`;
+}
 
 // Dört durum tek yerden yönetilir: yukleniyor, bos, hata, veri.
 function durum(tur, mesaj) {
@@ -33,7 +52,14 @@ function kart(ilan) {
   const aciklama = document.createElement("p");
   aciklama.textContent = ilan.aciklama;
 
-  li.append(baslik, firma, bilgi, aciklama);
+  const listede = basvuracaklarim.includes(ilan.id);
+  const dugme = document.createElement("button");
+  dugme.type = "button";
+  dugme.className = "basvur";
+  dugme.textContent = listede ? "Listemden çıkar" : "Listeme ekle";
+  dugme.setAttribute("aria-pressed", String(listede));
+
+  li.append(baslik, firma, bilgi, aciklama, dugme);
   return li;
 }
 
@@ -79,4 +105,22 @@ async function baslat() {
 $("#alan").addEventListener("change", suz);
 $("#arama").addEventListener("input", suz);
 
+// Olay delegasyonu: tek dinleyiciyle tüm .basvur düğmelerini yönetir.
+$("#ilanlar").addEventListener("click", (olay) => {
+  const dugme = olay.target.closest(".basvur");
+  if (!dugme) return;
+
+  const id = Number(dugme.closest(".kart").dataset.id);
+  if (basvuracaklarim.includes(id)) {
+    basvuracaklarim = basvuracaklarim.filter((kayitId) => kayitId !== id);
+  } else {
+    basvuracaklarim.push(id);
+  }
+
+  listeKaydet();
+  sayaciGuncelle();
+  suz();
+});
+
+sayaciGuncelle();
 baslat();
