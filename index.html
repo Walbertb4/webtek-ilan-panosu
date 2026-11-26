@@ -20,6 +20,22 @@
   <main>
     <section id="ilanlar-bolumu">
       <h2>İlanlar</h2>
+      <div class="suzgec-cubugu">
+        <div class="alan-grubu">
+          <label for="alan">Alan</label>
+          <select id="alan">
+            <option value="">Tüm alanlar</option>
+            <option value="on-yuz">Ön yüz</option>
+            <option value="arka-uc">Arka uç</option>
+            <option value="veri">Veri</option>
+            <option value="sistem">Sistem</option>
+          </select>
+        </div>
+        <div class="alan-grubu">
+          <label for="arama">Ara (pozisyon veya firma)</label>
+          <input id="arama" type="search" placeholder="Örn. staj, Martı…">
+        </div>
+      </div>
       <p id="durum" role="status"></p>
       <ul id="ilanlar"></ul>
     </section>

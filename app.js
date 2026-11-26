@@ -44,6 +44,23 @@ function ciz(liste) {
   else durum("veri", `${liste.length} ilan`);
 }
 
+// Seçili alan ve arama metnine göre ilanları süzer.
+function suz() {
+  const seciliAlan = $("#alan").value;
+  const aranan = $("#arama").value.trim().toLocaleLowerCase("tr");
+
+  const sonuc = ilanlar.filter((ilan) => {
+    const alanUygun = !seciliAlan || ilan.alan === seciliAlan;
+    const metinUygun =
+      !aranan ||
+      ilan.pozisyon.toLocaleLowerCase("tr").includes(aranan) ||
+      ilan.firma.toLocaleLowerCase("tr").includes(aranan);
+    return alanUygun && metinUygun;
+  });
+
+  ciz(sonuc);
+}
+
 async function baslat() {
   durum("yukleniyor", "İlanlar yükleniyor…");
   try {
@@ -53,10 +70,13 @@ async function baslat() {
 
     ilanlar = await yanit.json();
 
-    ciz(ilanlar);
+    suz();
   } catch (hata) {
     durum("hata", "İlanlar yüklenemedi: " + hata.message);
   }
 }
+
+$("#alan").addEventListener("change", suz);
+$("#arama").addEventListener("input", suz);
 
 baslat();
